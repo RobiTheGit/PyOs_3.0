@@ -1,0 +1,4 @@
+# PyOs_3.0
+after setup is ran, extract basicapps into user/
+
+works on linux and maybe sometimes windows or mac
