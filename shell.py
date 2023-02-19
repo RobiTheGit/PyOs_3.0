@@ -18,7 +18,7 @@ global cmdlist
 cmdlist = '''
 Command List for now:
 
-CHDIR - Change the current workign directory
+CHDIR - Change the current working directory
 DIR - List files in the directory
 HELP - Get help for commands
 MKDIR - Make a new directory
