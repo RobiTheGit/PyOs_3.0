@@ -7,4 +7,4 @@ Can run:
 
 Python 3 apps (including the py2.py thing for py2 compatibility)
 
-Linux Apps (local only without specifying it, on linux)
+Linux Apps (local only unless specify the directory it is in, on linux)
