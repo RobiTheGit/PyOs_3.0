@@ -3,7 +3,7 @@ import getpass
 import os
 
 def setpwd():
-    f = open('user/password.pass', 'w')
+    f = open('user/.password/password.pass', 'x')
     password = getpass.getpass('Password: ', stream=None)
     f.write(password)
 
@@ -19,7 +19,6 @@ try:
         os.mkdir('user/Videos')
 #============================================================#
     if os.path.exists('user/Documents'):
-        print('directory exists!')
         pass
     else:
         os.mkdir('user/Documents')
@@ -37,9 +36,13 @@ try:
     if os.path.exists('user/Apps'):
         pass
     else:
-        os.mkdir('user/Apps') 
+        os.mkdir('user/Apps')
 #============================================================#
-  #  setpwd()
+    if os.path.exists('user/.password'):
+        pass
+    else:
+        os.mkdir('user/.password')         
+#============================================================#
+    setpwd()
 except:
-    pass
-  #  setpwd()
+    setpwd()
