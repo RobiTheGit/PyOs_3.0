@@ -37,7 +37,7 @@ nyd = date(today.year, 12, 31)
 timetilnyd = nyd - today
 user = getpass.getuser()
 os.system('clear') 
-print(f'PYSHELL FOR USER "{user.upper()}"')
+print(f'{colors.white}PYSHELL FOR USER "{user.upper()}"')
 def login():
     if os.path.getsize('user/.password/password.pass') == 0:
         main()   
@@ -56,7 +56,7 @@ def login():
                 print('')
                 main()
     else:
-        print(f'INVALID PASSWORD')
+        print(f'{colors.red}INVALID PASSWORD{colors.white}')
         time.sleep(0.5)
         login()
         
@@ -113,7 +113,7 @@ def CLEAR():
     os.system('clear')
     
 def main():
-    command = input(f"pyshell-{user}@PyOs3~{os.getcwd()}: ")
+    command = input(f"pyshell-{colors.green}{user}{colors.blue}@PyOs3{colors.cyan}~{os.getcwd()}{colors.white}: ")
     if command.upper() == 'EXIT':
         EXIT()
     elif command.upper() == 'CLEAR':
