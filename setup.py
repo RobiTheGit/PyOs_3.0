@@ -3,7 +3,8 @@ import getpass
 import os
 
 def setpwd():
-    f = open('user/.password/password.pass', 'x')
+    user = getpass.getuser()
+    f = open(f'user/.password/{user}password.pass', 'x')
     password = getpass.getpass('Password: ', stream=None)
     f.write(password)
 
@@ -43,6 +44,7 @@ try:
     else:
         os.mkdir('user/.password')         
 #============================================================#
+
     setpwd()
 except:
     setpwd()

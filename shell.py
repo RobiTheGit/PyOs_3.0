@@ -8,7 +8,8 @@ import subprocess
 import getpass
 import datetime
 from datetime import date
-correctpass = open('user/.password/password.pass')
+user = getpass.getuser()
+correctpass = open(f'user/.password/{user}password.pass')
 cpass = correctpass.read()
 if os.path.exists('user/'):
     pass
@@ -21,25 +22,24 @@ Command List for now:
 
 CHDIR or CD- Change the current working directory
 DIR or LS- List files in the directory
-HELP - Get help for commands
-MKDIR - Make a new directory
-RMDIR - Remove a directory
+HELP or ? - Get help for commands
+MKDIR or TOUCHDIR - Make a new directory
+RMDIR or DELDIR - Remove a directory
 MV or MOVE - Move a file somewhere else
 CP or COPY- Copy a file somewhere
-TOUCH - Make a New File
+TOUCH or CREATE - Make a New File
 RM or REMOVE - Remove a file
-EXIT - Exit PYSHELL
-RUN - Run a program
-CLEAR - Clear The Screen
+EXIT or QUIT- Exit PYSHELL
+RUN or EXEC - Run a program
+CLEAR or CLS - Clear The Screen
 '''
 today = date.today()
 nyd = date(today.year, 12, 31)
 timetilnyd = nyd - today
-user = getpass.getuser()
 os.system('clear') 
 print(f'{colors.white}PYSHELL FOR USER "{user.upper()}"')
 def login():
-    if os.path.getsize('user/.password/password.pass') == 0:
+    if os.path.getsize(f'user/.password/{user}password.pass') == 0:
         main()   
     subprocess.run('clear')
     print(f'Login for {user}')
@@ -114,11 +114,11 @@ def CLEAR():
     
 def main():
     command = input(f"pyshell-{colors.green}{user}{colors.blue}@PyOs3{colors.cyan}~{os.getcwd()}{colors.white}: ")
-    if command.upper() == 'EXIT':
+    if command.upper() == 'EXIT' or command.upper() == "QUIT":
         EXIT()
-    elif command.upper() == 'CLEAR':
+    elif command.upper() == 'CLEAR' or command.upper() == "CLS":
         CLEAR()
-    elif command.upper() == "TOUCH":
+    elif command.upper() == "TOUCH" or command.upper() == "CREATE":
         TOUCH()
     elif command.upper() == "MV" or command.upper() == "MOVE":
         MV()
@@ -126,20 +126,20 @@ def main():
         CP()
     elif command.upper() == "RM" or command.upper() == "REMOVE":
         RM()
-    elif command.upper() == "RUN":
+    elif command.upper() == "RUN" or command.upper() == "EXEC":
         RUN()
     elif command.upper() == "CHDIR" or command.upper() == "CD":
         CHDIR()
-    elif command.upper() == "HELP":
+    elif command.upper() == "HELP" or command.upper() == "?":
         HELP()
-    elif command.upper() == "MKDIR":
+    elif command.upper() == "MKDIR" or command.upper() == "TOUCHDIR":
         MKDIR()
-    elif command.upper() == "RMDIR":
+    elif command.upper() == "RMDIR" or command.upper() == "DELDIR":
         RMDIR()
     elif command.upper() == "DIR" or command.upper().startswith("LS"):
         DIR()
     else:
-        print('COMMAND NOT FOUND OR NOT TYPED PROPERLY')
+        print(f'{colors.red}COMMAND NOT FOUND OR NOT TYPED PROPERLY{colors.white}')
     try:
        recurse()
     except KeyboardInterrupt:
