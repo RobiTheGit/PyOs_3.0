@@ -16,6 +16,7 @@ if os.path.exists('user/'):
 else:
    os.mkdir('user/')
 home = os.getcwd()
+currentdir = os.getcwd()
 global cmdlist
 cmdlist = '''
 Command List for now:
@@ -32,7 +33,10 @@ RM or REMOVE - Remove a file
 EXIT or QUIT- Exit PYSHELL
 RUN or EXEC - Run a program
 CLEAR or CLS - Clear The Screen
+ROOT or SUDO - Toggle running as root
 '''
+global rt
+rt = False
 today = date.today()
 nyd = date(today.year, 12, 31)
 timetilnyd = nyd - today
@@ -42,10 +46,11 @@ def login():
     if os.path.getsize(f'user/.password/{user}password.pass') == 0:
         main()   
     subprocess.run('clear')
-    print(f'Login for {user}')
-    passw = getpass.getpass('Password: ', stream=None)
+    print(f'{colors.green}Login for {colors.cyan}{user}{colors.white}')
+    passw = getpass.getpass(f'{colors.yellow}Password:{colors.white} ', stream=None)
     if passw == cpass:
         os.chdir(home+'/user/')
+        subprocess.run('clear')
         try:
             main()
         except KeyboardInterrupt:
@@ -68,14 +73,30 @@ def DIR():
         
 def MKDIR():
     Dir = input('Directory Name? ')
-    os.mkdir(Dir)
-    
+    try:
+        if rt == False:
+            os.mkdir(Dir)
+        else:
+            os.system(f"sudo mkdir {Dir}")
+    except PermissionError:
+        print(f'{colors.red}Permission Denied{colors.white}')
+    except:
+        main()    
 def RMDIR():
     Dir = input('Directory Name? ')
-    os.rmdir(Dir)
+    try:
+        if rt == False:
+            os.rmdir(Dir)
+        else:
+            os.system(f"sudo rmdir {Dir}")
+    except PermissionError:
+        print(f'{colors.red}Permission Denied{colors.white}')
+    except:
+        main()
     
 def CHDIR():
     cd = input('Directory to change to? ')
+    currentdir = cd
     try:
         os.chdir(cd)
     except:
@@ -89,20 +110,42 @@ def HELP():
 def MV():
     ogfile = input('File to move: ')
     newfile = input('output of move: ')
-    os.system(f"mv {ogfile} {newfile}")
+    try:
+        if rt == False:
+            os.system(f"mv {ogfile} {newfile}")
+        else:
+            os.system(f"sudo mv {ogfile} {newfile}")
+    except:
+        main()
 
 def CP():
     ogfile = input('File to copy: ')
     newfile = input('output of copy: ')
-    os.system(f"cp {ogfile} {newfile}")
-
+    try:
+        if rt == False:
+            os.system(f"cp {ogfile} {newfile}")
+        else:
+            os.system(f"sudo cp {ogfile} {newfile}")
+    except:
+        main()
 def TOUCH():
     name = input('File Name ')
-    files = open(name, "x")
+    if rt == False:
+        os.system(f"touch {name}")
+    else:
+        os.system(f"sudo touch {name}")
+
 
 def RM():
     name = input('File Name ')
-    os.remove(name)
+    try:
+        if rt == False:
+            os.remove(name)
+        else:
+            os.system(f"sudo rm {name}")
+    except:
+        main()
+
 def RUN():
     app = input('Path to App: ')
     if app.endswith('.py'):
@@ -111,9 +154,14 @@ def RUN():
         subprocess.run(f'{app}', shell=True)
 def CLEAR():
     os.system('clear')
-    
+def ROOT():
+    global rt
+    if rt == True:
+        rt = False
+    else:
+        rt = True
 def main():
-    command = input(f"pyshell-{colors.green}{user}{colors.blue}@PyOs3{colors.cyan}~{os.getcwd()}{colors.white}: ")
+    command = input(f"pyshell-{colors.green}{user}{colors.cyan}root={rt}{colors.blue}@PyOs3{colors.cyan}~{os.getcwd()}{colors.white}: ")
     if command.upper() == 'EXIT' or command.upper() == "QUIT":
         EXIT()
     elif command.upper() == 'CLEAR' or command.upper() == "CLS":
@@ -138,6 +186,8 @@ def main():
         RMDIR()
     elif command.upper() == "DIR" or command.upper().startswith("LS"):
         DIR()
+    elif command.upper() == "ROOT" or command.upper().startswith("SUDO"):
+        ROOT()
     else:
         print(f'{colors.red}COMMAND NOT FOUND OR NOT TYPED PROPERLY{colors.white}')
     try:
