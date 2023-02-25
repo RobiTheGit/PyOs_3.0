@@ -1,7 +1,7 @@
 # PyOs_3.0
 after setup is ran, extract basicapps into anywhere in the directory or any subdirectories of user/
 
-works on linux and maybe sometimes windows or mac
+works on linux and won't on windows without rewrting everything
 
 Can run:
 
