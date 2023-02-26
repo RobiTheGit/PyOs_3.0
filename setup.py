@@ -9,6 +9,11 @@ def setpwd():
     f.write(password)
 
 try:
+    if os.path.exists('user/'):
+        pass
+    else:
+       os.mkdir('user/')
+#============================================================#        
     if os.path.exists('user/Music'):
         pass
     else:
