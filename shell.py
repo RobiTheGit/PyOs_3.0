@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-# RobiTheGit/RobiWanKenobi  
+# RobiTheGit/RobiWanKenobi
 # PyOs 3 / PyShell
-# Yeah there si a shebang
+# Yeah there is a shebang
 
 import sys
 import time
@@ -39,12 +39,18 @@ CP or COPY- Copy a file somewhere
 TOUCH or CREATE - Make a New File
 RM or REMOVE - Remove a file
 EXIT or QUIT- Exit PYSHELL
-RUN or EXEC - Run a program
+RUN or EXEC - Run a program or run a command that is on your main system but not in PyOs
 CLEAR or CLS - Clear The Screen
 ROOT or SUDO or ROOT INIT or SUDO INIT - Toggle running things as root
+NANO - run NANO text edtior
+VIM - run VIM text editor
+All commands have no arguments
+
 '''
 global rt
 rt = False
+global dsprt
+dsprt = False
 #============================================================#
 today = date.today()
 nyd = date(today.year, 12, 31)
@@ -54,7 +60,7 @@ os.system('clear')
 print(f'{colors.white}PYSHELL FOR USER "{user.upper()}"')
 def login():
     if os.path.getsize(f'user/.password/{user}password.pass') == 0:
-        main()   
+        main()
     subprocess.run('clear')
     print(f'{colors.green}Login for {colors.cyan}{user}{colors.white}')
     passw = getpass.getpass(f'{colors.yellow}Password:{colors.white} ', stream=None)
@@ -173,43 +179,84 @@ def RUN():
 #============================================================#
 def CLEAR():
     os.system('clear')
+#============================================================#
+def CLRTST():
+    print(colors.disptest)
+#============================================================#
+def NANO():
+    file = input('File to open (leave blank to open a new file) ')
+    os.system(f'nano {file}')
+#============================================================#
+def VIM():
+    file = input('File to open (leave blank to open a new file) ')
+    os.system(f'vim {file}')
+#============================================================#
 def ROOT():
     global rt
+    global dsprt
     if rt == True:
         rt = False
+        dsprt = False
     else:
         rt = True
+        dsprt = True
 #============================================================#
 def main():
-    command = input(f"pyshell-{colors.cyan}root={rt}&{colors.green}user={user}{colors.blue}@PyOs3{colors.cyan}~{os.getcwd()}{colors.white}: ")
+    if dsprt == True:
+        command = input(f"{colors.green}{user}[ROOT]@PyOs3:{colors.blue}{os.getcwd()}{colors.white}$ ")
+    else:
+        command = input(f"{colors.green}{user}@PyOs3:{colors.blue}{os.getcwd()}{colors.white}$ ")
+#============================================================#
     if command.upper() == 'EXIT' or command.upper() == "QUIT":
         EXIT()
+#============================================================#
     elif command.upper() == 'CLEAR' or command.upper() == "CLS":
         CLEAR()
+#============================================================#
     elif command.upper() == "TOUCH" or command.upper() == "CREATE":
         TOUCH()
+#============================================================#
     elif command.upper() == "MV" or command.upper() == "MOVE":
         MV()
+#============================================================#
     elif command.upper() == "CP" or command.upper() == "COPY":
         CP()
+#============================================================#
     elif command.upper() == "RM" or command.upper() == "REMOVE":
         RM()
+#============================================================#
     elif command.upper() == "RUN" or command.upper() == "EXEC":
         RUN()
+#============================================================#
     elif command.upper() == "CHDIR" or command.upper() == "CD":
         CHDIR()
+#============================================================#
     elif command.upper() == "HELP" or command.upper() == "?" or command.upper() == "H":
         HELP()
+#============================================================#
     elif command.upper() == "MKDIR" or command.upper() == "TOUCHDIR":
         MKDIR()
+#============================================================#
     elif command.upper() == "RMDIR" or command.upper() == "DELDIR":
         RMDIR()
+#============================================================#
     elif command.upper() == "DIR" or command.upper().startswith("LS"):
         DIR()
+#============================================================#
     elif command.upper() == "ROOT" or command.upper().startswith("SUDO") or command.upper() == "ROOT INIT" or command.upper() == "SUDO INIT":
         ROOT()
+#============================================================#
+    elif command.upper() == "CLRTST" or command.upper() == "COLORTEST":
+        CLRTST()
+#============================================================#
+    elif command.upper() == "NANO":
+        NANO()
+#============================================================#
+    elif command.upper() == "VI" or command.upper() == "VIM":
+        VIM()
+#============================================================#
     else:
-        print(f'{colors.red}COMMAND NOT FOUND OR NOT TYPED PROPERLY{colors.white}')
+        print(f'{colors.red}COMMAND NOT FOUND OR NOT TYPED PROPERLY!{colors.white}')
 #============================================================#
     try:
        recurse()

@@ -1,24 +1,25 @@
 #!/usr/bin/python3
 import getpass
 import os
-
+#============================================================#
 def setpwd():
     user = getpass.getuser()
     f = open(f'user/.password/{user}password.pass', 'x')
     password = getpass.getpass('Password: ', stream=None)
     f.write(password)
 
-try:
+#============================================================#
+def dirsetup():
     if os.path.exists('user/'):
         pass
     else:
        os.mkdir('user/')
-#============================================================#        
+#============================================================#
     if os.path.exists('user/Music'):
         pass
     else:
         os.mkdir('user/Music')
-#============================================================#        
+#============================================================#
     if os.path.exists('user/Videos'):
         pass
     else:
@@ -47,9 +48,11 @@ try:
     if os.path.exists('user/.password'):
         pass
     else:
-        os.mkdir('user/.password')         
+        os.mkdir('user/.password')
 #============================================================#
-
+try:
+    dirsetup()
     setpwd()
 except:
     setpwd()
+#============================================================#
