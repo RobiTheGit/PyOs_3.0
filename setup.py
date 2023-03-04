@@ -4,7 +4,10 @@ import os
 #============================================================#
 def setpwd():
     user = getpass.getuser()
-    f = open(f'user/.password/{user}password.pass', 'x')
+    try:
+        f = open(f'user/.password/{user}password.pass', 'x')
+    except:
+        f = open(f'user/.password/{user}password.pass', 'w')
     password = getpass.getpass('Password: ', stream=None)
     f.write(password)
 

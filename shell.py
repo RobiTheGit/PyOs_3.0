@@ -2,7 +2,7 @@
 # RobiTheGit/RobiWanKenobi
 # PyOs 3 / PyShell
 # Yeah there is a shebang
-
+import re
 import sys
 import time
 import colors
@@ -11,19 +11,25 @@ import subprocess
 import getpass
 import datetime
 import platform
-from datetime import date
+from datetime import *
 #============================================================#
 user = getpass.getuser()
-correctpass = open(f'user/.password/{user}password.pass')
-cpass = correctpass.read()
 #============================================================#
 if os.path.exists('user/'):
     pass
 else:
    os.mkdir('user/')
+   
+if os.path.exists('touch user/.password/{user}password.pass'):
+    correctpass = open(f'user/.password/{user}password.pass')
+else:
+   os.system(f'touch user/.password/{user}password.pass')
+   correctpass = open(f'user/.password/{user}password.pass')
+    
+cpass = correctpass.read()
 #============================================================#
 home = os.getcwd()
-currentdir = os.getcwd()
+currentdir = os.getcwd() + '/user'
 #============================================================#
 global cmdlist
 cmdlist = '''
@@ -47,26 +53,32 @@ VIM - run VIM text editor
 All commands have no arguments
 
 '''
+global today
+today = datetime.now()
 global rt
 rt = False
 global dsprt
 dsprt = False
 #============================================================#
-today = date.today()
-nyd = date(today.year, 12, 31)
-timetilnyd = nyd - today
-#============================================================#
 os.system('clear') 
-print(f'{colors.white}PYSHELL FOR USER "{user.upper()}"')
 def login():
     if os.path.getsize(f'user/.password/{user}password.pass') == 0:
+        print(f'''
+Welcom to PyOs 3.0 {user}
+Today is {today}
+Check for updates at https://github.com/RobiTheGit/PyOs_3.0
+''')
         main()
     subprocess.run('clear')
     print(f'{colors.green}Login for {colors.cyan}{user}{colors.white}')
     passw = getpass.getpass(f'{colors.yellow}Password:{colors.white} ', stream=None)
     if passw == cpass:
         os.chdir(home+'/user/')
-        subprocess.run('clear')
+        print(f'''
+Welcom to PyOs 3.0 {user}
+Today is {today}
+Check for updates at https://github.com/RobiTheGit/PyOs_3.0
+''')
         try:
             main()
         except KeyboardInterrupt:
@@ -84,8 +96,11 @@ def login():
 def DIR():
     path = os.getcwd()
     print(f"Files in {path}:\n")
-    for x in os.scandir():
-        print(f'{x}, Read: {os.R_OK}, Write: {os.W_OK}, Excecute: {os.X_OK}')
+    for x in os.listdir():
+        if os.path.isdir(x):
+            print(f'Directory: {x}, {os.path.getsize(x)}, Read: {os.R_OK}, Write: {os.W_OK}, Excecute: {os.X_OK}')
+        elif os.path.isfile(x):
+            print(f'File: {x}, {os.path.getsize(x)}, Read: {os.R_OK}, Write: {os.W_OK}, Excecute: {os.X_OK}')
 #============================================================#
 def MKDIR():
     Dir = input('Directory Name? ')
@@ -117,7 +132,7 @@ def CHDIR():
     try:
         os.chdir(cd)
     except:
-        os.chdir(home)
+        os.chdir(home + '/user')
 #============================================================#
 def EXIT():
     sys.exit(0)
@@ -202,10 +217,15 @@ def ROOT():
         dsprt = True
 #============================================================#
 def main():
+    global currentdir
+    cd2 = currentdir
+    if cd2 == os.getcwd():
+        currentdir = ''
+    cd2 = currentdir
     if dsprt == True:
-        command = input(f"{colors.green}{user}[ROOT]@PyOs3:{colors.blue}{os.getcwd()}{colors.white}$ ")
+        command = input(f"{colors.green}{user}[ROOT]@PyOs3:{colors.blue}{os.getcwd()}{currentdir}{colors.white}$ ")
     else:
-        command = input(f"{colors.green}{user}@PyOs3:{colors.blue}{os.getcwd()}{colors.white}$ ")
+        command = input(f"{colors.green}{user}@PyOs3:{colors.blue}{os.getcwd()}{currentdir}{colors.white}$ ")
 #============================================================#
     if command.upper() == 'EXIT' or command.upper() == "QUIT":
         EXIT()
