@@ -45,12 +45,12 @@ CP or COPY- Copy a file somewhere
 TOUCH or CREATE - Make a New File
 RM or REMOVE - Remove a file
 EXIT or QUIT- Exit PYSHELL
-RUN or EXEC - Run a program or run a command that is on your main system but not in PyOs
+RUN or EXEC or LINUX - Run a program or run a command that is on your main system but not in PyOs
 CLEAR or CLS - Clear The Screen
 ROOT or SUDO or ROOT INIT or SUDO INIT - Toggle running things as root
 NANO - run NANO text edtior
 VIM - run VIM text editor
-All commands have no arguments
+All commands have no arguments because, python
 
 '''
 global today
@@ -64,7 +64,7 @@ os.system('clear')
 def login():
     if os.path.getsize(f'user/.password/{user}password.pass') == 0:
         print(f'''
-Welcom to PyOs 3.0 {user}
+Welcome to PyOs 3.0 {user}
 Today is {today}
 Check for updates at https://github.com/RobiTheGit/PyOs_3.0
 ''')
@@ -135,10 +135,11 @@ def CHDIR():
         os.chdir(home + '/user')
 #============================================================#
 def EXIT():
+    print("Shutting Down!")
     sys.exit(0)
 #============================================================#
 def HELP():
-    print(cmdlist)
+    print(colors.yellow, cmdlist, colors.white)
 #============================================================#
 def MV():
     ogfile = input('File to move: ')
@@ -245,7 +246,7 @@ def main():
     elif command.upper() == "RM" or command.upper() == "REMOVE":
         RM()
 #============================================================#
-    elif command.upper() == "RUN" or command.upper() == "EXEC":
+    elif command.upper() == "RUN" or command.upper() == "EXEC" or command.upper() == "LINUX":
         RUN()
 #============================================================#
     elif command.upper() == "CHDIR" or command.upper() == "CD":
@@ -263,17 +264,19 @@ def main():
     elif command.upper() == "DIR" or command.upper().startswith("LS"):
         DIR()
 #============================================================#
-    elif command.upper() == "ROOT" or command.upper().startswith("SUDO") or command.upper() == "ROOT INIT" or command.upper() == "SUDO INIT":
+    elif command.upper().startswith("ROOT") or command.upper().startswith("SUDO") or command.upper() == "ROOT INIT" or command.upper() == "SUDO INIT":
         ROOT()
 #============================================================#
     elif command.upper() == "CLRTST" or command.upper() == "COLORTEST":
         CLRTST()
 #============================================================#
-    elif command.upper() == "NANO":
+    elif command.upper() == "NANO" or command.upper() == "THE GOOD COMMAND LINE TEXT EDITOR":
         NANO()
 #============================================================#
     elif command.upper() == "VI" or command.upper() == "VIM":
         VIM()
+    elif command.upper() == "":
+        recurse()
 #============================================================#
     else:
         print(f'{colors.red}COMMAND NOT FOUND OR NOT TYPED PROPERLY!{colors.white}')
