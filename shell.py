@@ -12,6 +12,8 @@ import getpass
 import datetime
 import platform
 from datetime import *
+os.system(f'touch user/history.txt')   
+f = open(f'user/history.txt', "a")
 #============================================================#
 user = getpass.getuser()
 #============================================================#
@@ -20,7 +22,7 @@ if os.path.exists('user/'):
 else:
    os.mkdir('user/')
    
-if os.path.exists('touch user/.password/{user}password.pass'):
+if os.path.exists('user/.password/{user}password.pass'):
     correctpass = open(f'user/.password/{user}password.pass')
 else:
    os.system(f'touch user/.password/{user}password.pass')
@@ -50,6 +52,7 @@ CLEAR or CLS - Clear The Screen
 ROOT or SUDO or ROOT INIT or SUDO INIT - Toggle running things as root
 NANO - run NANO text edtior
 VIM - run VIM text editor
+CAT - Read from a file
 All commands have no arguments because, python
 
 '''
@@ -203,6 +206,10 @@ def NANO():
     file = input('File to open (leave blank to open a new file) ')
     os.system(f'nano {file}')
 #============================================================#
+def CAT():
+    file = input('File to read ')
+    os.system(f'cat {file}')
+#============================================================#
 def VIM():
     file = input('File to open (leave blank to open a new file) ')
     os.system(f'vim {file}')
@@ -273,6 +280,9 @@ def main():
     elif command.upper() == "NANO" or command.upper() == "THE GOOD COMMAND LINE TEXT EDITOR":
         NANO()
 #============================================================#
+    elif command.upper() == "CAT":
+        CAT()
+#============================================================#
     elif command.upper() == "VI" or command.upper() == "VIM":
         VIM()
     elif command.upper() == "":
@@ -281,6 +291,8 @@ def main():
     else:
         print(f'{colors.red}COMMAND NOT FOUND OR NOT TYPED PROPERLY!{colors.white}')
 #============================================================#
+    with open("history.txt", 'a') as f:
+        f.write(f"{str(command.upper())}\n")
     try:
        recurse()
     except KeyboardInterrupt:
@@ -307,3 +319,4 @@ if sys.platform.startswith('win32') or sys.platform.startswith('cygwin'):
 else:
     login()
 #============================================================#
+
