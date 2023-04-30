@@ -4,12 +4,11 @@
 # Yeah there is a shebang
 import re
 import sys
-import time
+import time as sleeper
 import colors
 import os
 import subprocess
 import getpass
-import datetime
 import platform
 from datetime import *
 os.system(f'touch user/history.txt')   
@@ -53,6 +52,7 @@ ROOT or SUDO or ROOT INIT or SUDO INIT - Toggle running things as root
 NANO - run NANO text edtior
 VIM - run VIM text editor
 CAT - Read from a file
+HISTORY - Run a command from history (to read the history, run CAT and the as the file, history.txt)
 All commands have no arguments because, python
 
 '''
@@ -93,7 +93,7 @@ Check for updates at https://github.com/RobiTheGit/PyOs_3.0
                 main()
     else:
         print(f'{colors.red}INVALID PASSWORD{colors.white}')
-        time.sleep(0.5)
+        sleeper.sleep(0.5)
         login()
 #============================================================#
 def DIR():
@@ -224,7 +224,22 @@ def ROOT():
         rt = True
         dsprt = True
 #============================================================#
+def HISTORY():
+    global command
+    with open("history.txt", 'r') as f:
+        history = f.readlines()
+    x = input(f"What index of the history do you want to run? (Lesser = Older, Greater = Recent, indexes start at 0) Earliest CMD {history[0]}, Latest CMD {history[-2]}  \n> ")
+    try:
+        command1 = history[int(x)]
+    except:
+        recurse()
+    command = re.sub('\n', '', command1)
+    with open("history.txt", 'a') as f:
+        f.write(f"{str(command.upper())}\n")  
+    runcmd()  
+#============================================================#
 def main():
+    global command
     global currentdir
     cd2 = currentdir
     if cd2 == os.getcwd():
@@ -234,6 +249,11 @@ def main():
         command = input(f"{colors.green}{user}[ROOT]@PyOs3:{colors.blue}{os.getcwd()}{currentdir}{colors.white}$ ")
     else:
         command = input(f"{colors.green}{user}@PyOs3:{colors.blue}{os.getcwd()}{currentdir}{colors.white}$ ")
+    with open("history.txt", 'a') as f:
+        f.write(f"{str(command.upper())}\n")
+    runcmd()
+def runcmd():
+    global command
 #============================================================#
     if command.upper() == 'EXIT' or command.upper() == "QUIT":
         EXIT()
@@ -285,14 +305,16 @@ def main():
 #============================================================#
     elif command.upper() == "VI" or command.upper() == "VIM":
         VIM()
+#============================================================#
+    elif command.upper() == "HISTORY":
+        HISTORY()
+#============================================================#
     elif command.upper() == "":
         recurse()
 #============================================================#
     else:
         print(f'{colors.red}COMMAND NOT FOUND OR NOT TYPED PROPERLY!{colors.white}')
 #============================================================#
-    with open("history.txt", 'a') as f:
-        f.write(f"{str(command.upper())}\n")
     try:
        recurse()
     except KeyboardInterrupt:
